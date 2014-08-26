@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+if [ "`uname -r`" = "2.6.39.2" ]; then
+	/sbin/depmod -a
+fi
+
+#DEBHELPER#
+
+exit 0

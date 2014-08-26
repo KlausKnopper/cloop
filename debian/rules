@@ -1,0 +1,319 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# Sample debian/rules that uses debhelper. 
+# This file was originally written by Joey Hess and Craig Small.
+# As a special exception, when this file is copied by dh-make into a
+# dh-make output file, you may use that output file without restriction.
+# This special exception was added by Craig Small in version 0.37 of dh-make.
+#
+# This version is for a hypothetical package that can build a kernel modules
+# architecture-dependant package via make-kpkg, as well as an
+# architecture-independent module source package, and other packages
+# either dep/indep for things like common files or userspace components
+# needed for the kernel modules.
+#
+
+# Basename of module and package
+name = cloop
+
+# Uncomment this to turn on verbose mode. 
+#export DH_VERBOSE=1
+
+CFLAGS = -Wall
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+### KERNEL SETUP
+### Setup the stuff needed for making kernel module packages
+### taken from /usr/share/kernel-package/sample.module.rules
+
+# Name of package
+# package		= $(name)-knoppix
+package		= $(name)
+# KSRC is the location of the kernel source. This is the default value,
+# when make-kpkg is used it will supply to real value
+ifeq ($(strip $(KSRC)),)
+KSRC		= /lib/modules/`uname -r`/build
+endif
+# KDREV is the package-revision, as given to make-kpkg by the user.
+# Just put a simply default value in here which we use when we test
+# the packagebuilding without make-kpkg
+ifeq ($(strip $(KDREV)),)
+KDREV		= "test1.0"
+endif
+
+## Now to determine the kernel version, normally supplied by make-kpkg
+ifeq ($(strip $(KVERS)),)
+# Now we need to get the kernel-version somehow (we are not running
+# under make-kpkg?)
+ifeq ($(strip $(KSRC)),)
+$(error Error. I do not know how to determine the kernel version)
+else
+kversion :=$(shell grep -E '^VERSION +=' $(KSRC)/Makefile 2>/dev/null | \
+                 sed -e 's/[^0-9]*\([0-9]*\)/\1/')
+kplevel  :=$(shell grep -E '^PATCHLEVEL +=' $(KSRC)/Makefile 2>/dev/null | \
+                    sed -e 's/[^0-9]*\([0-9]*\)/\1/')
+ksublevel:=$(shell grep -E '^SUBLEVEL +=' $(KSRC)/Makefile 2>/dev/null | \
+                  sed -e 's/[^0-9]*\([0-9]*\)/\1/')
+EXTRA_VERSION:=$(shell grep -E '^EXTRAVERSION +=' $(KSRC)/Makefile 2>/dev/null | \
+                 sed -e 's/EXTRAVERSION[\t ]*=[\t ]*\(.*\)/\1/')
+kextra:=$(strip $(EXTRA_VERSION))
+HAVE_NEW_MODLIB:=$(shell grep -E '\(INSTALL_MOD_PATH\)' \
+                            $(KSRC)/Makefile 2>/dev/null )
+
+# If you want to have more than one kernel configuration per kernel
+# version, set FLAVOUR in the top level kernel Makefile *before*
+# invoking make-kpkg -- it will be appended to UTS_RELEASE in
+# version.h (separated by a hyphen). This affects everything -- the
+# names and versions of the image, source, headers, and doc packages,
+# and where the modules are searched for in /lib/modules.
+
+ifdef FLAVOUR
+# uhm - should check if we really have a Makefile capable of Flavours?
+endif
+
+FLAVOUR:=$(shell grep ^FLAVOUR $(KSRC)/Makefile 2>/dev/null | \
+                  perl -ple 's/FLAVOUR[\s:=]+//g')
+
+ifneq ($(strip $(FLAVOUR)),)
+INT_FLAV := -$(FLAVOUR)
+FLAV_ARG := FLAVOUR=$(FLAVOUR)
+else
+INT_FLAV :=
+FLAV_ARG :=
+endif
+
+## This is the replacement for FLAVOUR
+ifneq ($(strip $(APPEND_TO_VERSION)),)
+iatv := $(strip $(APPEND_TO_VERSION))
+EXTRAV_ARG := EXTRAVERSION=${EXTRA_VERSION}${iatv}
+else
+iatv :=
+EXTRAV_ARG :=
+endif
+
+KVERS = $(kversion).$(kplevel).$(ksublevel)$(kextra)$(iatv)$(INT_FLAV)
+
+endif
+endif
+
+non_epoch_version=$(shell echo $(KVERS) | perl -pe 's/^\d+://')
+epoch=$(shell echo $(KVERS) | perl -ne 'm/^(\d+:)/ && print $$1')
+
+# We also need the package version
+pversion	= $(shell sed -ne '1s/.*\((.*)\).*/\1/' debian/changelog)
+pversion	= $(shell sed -ne '1s/.*(\(.*\)).*/\1/p' debian/changelog)
+
+# MODDIR is the place where the final .deb package should be made. This is the
+# default value, when make-kpkg is used it will supply to real value
+MODDIR		= ..
+
+pmodules = $(package)-module-$(non_epoch_version)
+psource = $(package)-source
+putils = $(package)-utils
+
+all:
+	@echo "Building all."
+	sleep 2
+
+# Prepares the package for distribution.  Intended for the kernel
+# maintainer.
+kdist: kdist_clean kdist_config kdist_image
+
+# The kdist_configure target is called by make-kpkg modules_config. It
+# should configure the module so it is ready for compilation (mostly
+# useful for calling configure)
+kdist_config:
+	@echo Nothing to configure
+
+# the kdist_image target is called by make-kpkg modules_image. It is
+# responsible for compiling the module and creating the package. It
+# should also clean up after making the module. Please note we use a
+# seperate binary-modules target to make testing the package building
+# easier
+kdist_image:
+	$(MAKE) $(MFLAGS) -f debian/rules binary-modules
+	$(MAKE) $(MFLAGS) -f debian/rules clean
+
+# the kdist_clean target is called by make-kpkg modules_clean. It is
+# responsible for cleaning up any changes that have been made by the
+# other kdist_commands (except for the .deb files created).
+kdist_clean:
+	$(MAKE) $(MFLAGS) -f debian/rules clean
+
+### end  KERNEL SETUP
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	# Add here commands to configure the package.
+
+	touch configure-stamp
+
+build-arch: configure-stamp  build-arch-stamp binary-modules
+build-arch-stamp:
+	dh_testdir
+
+	# Add here command to compile/build the package.
+	# $(MAKE)
+
+	touch build-arch-stamp
+
+# the binary-modules target prepares the $(pmodules) package.
+# It is called by make-kpkg and *not* during a normal build
+binary-modules:
+	dh_testdir
+	dh_clean -k
+
+	export DH_OPTIONS='-p$(pmodules)'
+
+	# Is this needed for setting up a Depends?
+	#echo "kpkg:Package-Version=$(epoch)$(pversion)+$(non_epoch_version)" \
+	#	 >> debian/$(package).substvars
+	# echo "_KVERS_=$(non_epoch_version)" > debian/$(pmodules).substvars
+
+	sed -e 's/_KVERS_/$(non_epoch_version)/g' debian/control.in > debian/control
+	sed -e 's/_KVERS_/$(non_epoch_version)/g' debian/postinst.modules.in > debian/postinst
+
+
+	# Build the module
+	$(MAKE) module KERNEL_DIR=$(KSRC) KVERSION=$(KVERS)
+
+	# Build the utils
+	$(MAKE) create_compressed_fs extract_compressed_fs cloop_suspend
+
+	install -d -m 755  $(CURDIR)/debian/$(pmodules)/lib/modules/$(KVERS)/kernel/drivers/block
+	-strip --strip-unneeded $(name).ko
+	cp $(name).ko $(CURDIR)/debian/$(pmodules)/lib/modules/$(KVERS)/kernel/drivers/block/
+
+	install -d -m 755 $(CURDIR)/debian/$(putils)/usr/sbin
+	install -m 755 extract_compressed_fs create_compressed_fs cloop_suspend $(CURDIR)/debian/$(putils)/usr/sbin/
+
+	fakeroot -u dh_installdebconf
+	# FIXME dh_installdocs README
+	fakeroot -u dh_installchangelogs
+
+	# We're not using this yet
+	#dh_installmodules
+
+	fakeroot -u dh_installdeb
+	#dh_gencontrol -- -v$(epoch)$(pversion)+$(non_epoch_version)+$(KDREV)
+	fakeroot -u dh_gencontrol -- -v$(epoch)$(pversion)
+	fakeroot -u dh_md5sums
+	#dh_builddeb --destdir=$(KSRC)/..
+	fakeroot -u dh_builddeb --destdir=$(MODDIR)
+
+build-indep:  configure-stamp build-indep-stamp
+build-indep-stamp:
+	dh_testdir
+
+	# Add here command to compile/build the arch indep package.
+	# It's ok not to do anything here, if you don't need to build
+	#  anything for this package.
+
+	touch build-indep-stamp
+
+build: build-arch build-indep
+
+clean:
+	dh_testdir
+	rm -f build-arch-stamp build-indep-stamp configure-stamp
+
+	# Add here commands to clean up after the build process.
+	-$(MAKE) clean
+
+	dh_clean
+
+install: DH_OPTIONS=
+install: build
+	dh_testdir
+	dh_clean -k
+	dh_installdirs
+
+	# Create the directories to install the source into
+	dh_installdirs -p$(psource)  usr/src/modules/$(package)
+	dh_installdirs -p$(psource)  usr/src/modules/$(package)/debian
+
+	# Copy only the driver source to the proper location
+	cp -a CHANGELOG *.[hc] Makefile README debian/$(psource)/usr/src/modules/$(package)
+
+	# Copy the needed debian/ pieces to the proper location
+	cp -u debian/control.in \
+		debian/$(psource)/usr/src/modules/$(package)/debian/control.in
+	cp -u debian/rules \
+		debian/$(psource)/usr/src/modules/$(package)/debian
+	cp -u debian/changelog \
+		debian/$(psource)/usr/src/modules/$(package)/debian
+	cp -u debian/copyright \
+		debian/$(psource)/usr/src/modules/$(package)/debian
+
+	# Add here commands to install the package into debian/$(name)-source.
+	# $(MAKE) install DESTDIR=$(CURDIR)/debian/$(package)-source
+
+	dh_install
+
+# Build architecture-independent files here.
+# Pass -i to all debhelper commands in this target to reduce clutter.
+binary-indep: build install
+	dh_testdir -i
+	fakeroot -u dh_installchangelogs -i
+	dh_installdocs -i
+	dh_installexamples -i
+#	dh_install -i
+#	dh_installmenu -i
+#	dh_installdebconf -i
+#	dh_installlogrotate -i
+#	dh_installemacsen -i
+#	dh_installpam -i
+#	dh_installmime -i
+#	dh_installinit -i
+#	dh_installcron -i
+#	dh_installinfo -i
+	dh_installman -i
+	dh_link -i
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdeb -i
+#	dh_perl -i
+#	dh_python -i
+#	dh_makeshlibs -i
+	dh_installdeb -i
+	dh_shlibdeps -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir -s
+#	dh_installdebconf -s
+	dh_installdocs -s
+	dh_installexamples -s
+	dh_installmenu -s
+#	dh_installlogrotate -s
+#	dh_installemacsen -s
+#	dh_installpam -s
+#	dh_installmime -s
+#	dh_installinit -s
+	dh_installcron -s
+#	dh_installman -s
+	dh_installinfo -s
+	fakeroot -u dh_installchangelogs -s
+	dh_strip -s
+	dh_link -s
+	dh_compress -s
+	dh_fixperms -s
+#	dh_makeshlibs -s
+	dh_installdeb -s
+#	dh_perl -s
+	dh_shlibdeps -s
+	dh_gencontrol -s
+	dh_md5sums -s
+	dh_builddeb -s
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure binary-modules kdist kdist_config kdist_image kdist_clean

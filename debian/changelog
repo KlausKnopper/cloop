@@ -1,0 +1,638 @@
+cloop (3.14-1) unstable; urgency=medium
+
+  * Updates for Kernel >= 3.14
+  * Preparing for git repository upload
+
+ -- Klaus Knopper <knoppix@knopper.net>  Tue, 26 Aug 2014 17:14:37 +0200
+
+cloop (2.639-2) unstable; urgency=low
+
+  * Change compressed_loop.h -> cloop.h everywhere.
+
+ -- Klaus Knopper <knoppix@knopper.net>  Wed, 06 Jul 2011 18:43:20 +0200
+
+cloop (2.639-1) unstable; urgency=low
+
+  * Changes for kernel 2.6.39, replace lock_kernel() by mutex_lock()
+
+ -- Klaus Knopper <knoppix@knopper.net>  Tue, 10 May 2011 14:18:21 +0200
+
+cloop (2.637-1) unstable; urgency=low
+
+  * Add compat_ioctl for compilation in 64bit mode.
+
+ -- Klaus Knopper <knoppix@knopper.net>  Tue, 11 Jan 2011 22:57:31 +0100
+
+cloop (2.636-1) unstable; urgency=low
+
+  * Changes for new kernel 2.6.36 removed block layer api function and
+    locked_ioctl.
+
+ -- Klaus Knopper <knoppix@knopper.net>  Mon, 25 Oct 2010 22:40:25 +0200
+
+cloop (2.634-1) unstable; urgency=low
+
+  * Changes for new kernel 2.6.34 sector limit functions
+  * Set device read-only by default
+
+ -- Klaus Knopper <knoppix@knopper.net>  Wed, 25 Aug 2010 13:36:01 +0200
+
+cloop (2.631-1) unstable; urgency=low
+
+  * Changes for new kernel 2.6.31 block device handling
+
+ -- Klaus Knopper <knoppix@knopper.net>  Tue, 15 Sep 2009 21:26:57 +0200
+
+cloop (2.629-1) unstable; urgency=low
+
+  * Acquired Eduard Blochs new advfs.cc and extract_compressed_fs.c
+
+ -- Klaus Knopper <knoppix@knopper.net>  Wed, 15 Apr 2009 10:59:32 +0200
+
+cloop (2.628-2) unstable; urgency=low
+
+  * Reflect kernel 2.6.28 block device API changes in order to actually work.
+
+ -- Klaus Knopper <knoppix@knopper.net>  Tue, 04 Nov 2008 18:38:02 +0100
+
+cloop (2.628-1) unstable; urgency=low
+
+  *  Minor source modifications for compiling with kernel 2.6.28
+
+ -- Klaus Knopper <knoppix@knopper.net>  Sat, 25 Oct 2008 23:11:39 +0200
+
+cloop (2.625-1) unstable; urgency=low
+
+  * Kernel 2.6.25/26 api changes
+
+ -- Klaus Knopper <knoppix@knopper.net>  Mon, 19 May 2008 18:44:27 +0200
+
+cloop (2.624-1) unstable; urgency=low
+
+  * Kernel 2.6.24 api change (rq_for_each_segment)
+
+ -- Klaus Knopper <knoppix@knopper.net>  Sat, 26 Jan 2008 13:05:45 +0100
+
+cloop (2.623-1) unstable; urgency=low
+
+  * Fixed alloc_disk-leak (caused modprobe cloop; rmmod cloop; modprobe cloop to fail).
+  * Added support for busybox losetup.
+
+ -- Klaus Knopper <knoppix@knopper.net>  Sun, 16 Dec 2007 23:10:01 +0200
+
+cloop (2.622-1) unstable; urgency=low
+
+  * Rewrite with Kernel-Thread and request-queue for Kernel 2.6.22 and up.
+  * Abandoned Kernel 2.4 support.
+  * Replaced obsolete advancecomp-1.9 by 1.15
+
+ -- Klaus Knopper <knoppix@knopper.net>  Sun, 23 Sep 2007 22:19:05 +0200
+
+cloop (2.06-2) unstable; urgency=low
+
+  * Patch for Kernel 2.6.22 invalidate_bdev(one arg).
+
+ -- Klaus Knopper <knoppix@knopper.net>  Tue, 10 Jul 2007 06:16:26 +0200
+
+cloop (2.06-1) unstable; urgency=low
+
+  * Added "cloop_suspend" ioctl and utility contributed by Fabian Franz.
+
+ -- Klaus Knopper <knoppix@knopper.net>  Sun, 25 Feb 2007 22:25:52 +0100
+
+cloop (2.05-1) unstable; urgency=low
+
+  * Adopted Eduard Blochs debian buildscripts for generic cloop 2.05
+
+ -- Klaus Knopper <knoppix@knopper.net>  Sun, 20 Aug 2006 14:10:24 +0200
+
+cloop (2.04-1+eb.1-7) unstable; urgency=low
+
+  * disabled debugging output (ooops...)
+  * another ugly bug identified by Andreas Krüger (thanks!), broken offset
+    index generation in tempfile mode (closes: #382762)
+  * Makefile fixes to adapt to new advfs.cc path
+  * manpage patch from Andreas to explain extract_compressed_fs usage applied
+    (closes: #382765) and SGML format fixes
+
+ -- Eduard Bloch <blade@debian.org>  Sun, 13 Aug 2006 12:43:44 +0200
+
+cloop (2.04-1+eb.1-6) unstable; urgency=low
+
+  * updated advancecomp to 1.15, better documenting (diff) modifications used
+    to implant advfs.cc
+  * bugfixes in advfs.cc:
+    - recognice -m/-f with standard output (closes: #382611)
+    - compressing block selection, could get stuck in rare cases
+
+ -- Eduard Bloch <blade@debian.org>  Sat, 12 Aug 2006 13:26:53 +0200
+
+cloop (2.04-1+eb.1-5) unstable; urgency=low
+
+  * not using the install-module rule from the Makefile, installing module
+    explicitely (closes: #381639)
+  * added debian/compat to the modules tarball
+  * fixed broken macros in Millan's patch (closes: #381626)
+
+ -- Eduard Bloch <blade@debian.org>  Sun, 06 Aug 2006 19:04:28 +0200
+
+cloop (2.04-1+eb.1-4) unstable; urgency=low
+
+  * Dirty little optimisation of the block-for-compression selection
+
+ -- Eduard Bloch <blade@debian.org>  Wed,  2 Aug 2006 23:53:05 +0200
+
+cloop (2.04-1+eb.1-3) unstable; urgency=low
+
+  * rewrite of the work control in multithreaded advfs/create_compressed_fs,
+    now definitely not adding a zero block on aligned data (closes: #296179)
+  * fixed a memory leak in "best" mode and better control for memory
+    allocation now (finally closes: #164015 and hopefully closes: #380384,
+    reopen if it doesn't)
+  * added pt.po (closes: #337546)
+  * added GNU/kFreeBSD porting patch from Robert Millan (closes: #335872)
+
+ -- Eduard Bloch <blade@debian.org>  Wed, 02 Aug 2006 23:51:14 +0200
+
+cloop (2.04-1+eb.1-2) unstable; urgency=low
+
+  * removed obsolete CFLAGS from the Makefile, confused current kernel build
+    system, plus some user hints added.
+  * compressed_loop.c: removed all conditional blocks with workarounds for
+    kernel << 2.6.8, including kernel 2.4 related junk. Gets the correct
+    module name now and no compiler warnings anymore. Fixed intendation.
+  * debian/control: removed some old cruft, updated to debhelper 5, updated
+    Standards-Version.
+
+ -- Eduard Bloch <blade@debian.org>  Fri, 28 Jul 2006 19:17:18 +0200
+
+cloop (2.04-1+eb.1-1) unstable; urgency=low
+
+  * Sync my modified version with 2.04.1
+    + fixes for 2.6.17 changes (closes: #376713)
+  * fixes for compilatin with 2.6.18-rc2 (disabling devfs)
+  * -s -> -S in create_compressed_fs help output (closes: #360764)
+
+ -- Eduard Bloch <blade@debian.org>  Thu, 27 Jul 2006 19:19:30 +0200
+
+cloop (2.04-1) unstable; urgency=low
+
+  * Fixed a memory leak when changing loop files.
+
+ -- Klaus Knopper <knoppix@knopper.net>  Sun, 14 May 2006 20:06:23 +0200
+
+cloop (2.03-2) unstable; urgency=low
+
+  * Fixed KBUILD_BASENAME string quotes
+
+ -- Klaus Knopper <knoppix@knopper.net>  Sun, 23 Apr 2006 10:02:10 +0200
+
+cloop (2.03-1) unstable; urgency=low
+
+  * Use dynamic major device allocation in case we can't get block device 240
+  * devfs cleanups
+
+ -- Klaus Knopper <knoppix@knopper.net>  Fri, 17 Feb 2006 10:28:17 +0100
+
+cloop (2.02.1+eb.11) UNRELEASED; urgency=low
+
+  * NOT RELEASED YET
+  * minor fixes in manpage and help output
+
+ -- Eduard Bloch <blade@debian.org>  Thu,  6 Oct 2005 12:52:48 +0200
+
+cloop (2.02.1+eb.10) unstable; urgency=low
+
+  * synch with Ubuntu: fixes interaction with devmapper layer in the driver.
+    Thanks for telling me, it is a "great" feeling doing duplicated work!
+  * cloop-node-control.sh: better ssh options, not allocating pseudo tty,
+    should help on AIX
+  * simple fixes to compile advfs.cc on AIX
+  * added sv.po by Daniel Nylander (closes: #331306)
+
+ -- Eduard Bloch <blade@debian.org>  Thu, 06 Oct 2005 12:48:16 +0200
+
+cloop (2.02.1+eb.8) unstable; urgency=low
+
+  * create_compressed_fs bugfixes
+    + correct identification of IP numbers, no longer confusing with the
+      compatible option syntax
+    + cygwin workarounds in the recv calls
+
+ -- Eduard Bloch <blade@debian.org>  Sun, 25 Sep 2005 18:25:37 +0200
+
+cloop (2.02.1+eb.7) unstable; urgency=low
+
+  * -L option for direct compression level choice
+  * network protocol sligthly changed to create less overhead, also setting
+    TCP_NODELAY option
+  * cygwin build fixes
+
+ -- Eduard Bloch <blade@debian.org>  Sun, 25 Sep 2005 18:21:59 +0200
+
+cloop (2.02.1+eb.6) unstable; urgency=medium
+
+  * added correct KERNELVERSION to kernel make flags (closes: #327792)
+
+ -- Eduard Bloch <blade@debian.org>  Thu, 22 Sep 2005 16:22:41 +0200
+
+cloop (2.02.1+eb.5) unstable; urgency=medium
+
+  * fixed the option parser to correctly read the nodes list and use -B for
+    best, not -b (the blocksize)
+
+ -- Eduard Bloch <blade@debian.org>  Wed, 14 Sep 2005 22:49:59 +0200
+
+cloop (2.02.1+eb.4) unstable; urgency=low
+
+  * made option parser be more relaxed WRT old command syntax
+  * updated manpage to reflect the new command and driver features
+
+ -- Eduard Bloch <blade@debian.org>  Wed, 14 Sep 2005 22:48:17 +0200
+
+cloop (2.02.1+eb.3) unstable; urgency=low
+
+  * advfs troughput message display frequency fixed, added ETA info
+  * added experimental feature: splitting output into chunks of specified size
+    like with split(1) (however without stdout mode with its problems)
+
+ -- Eduard Bloch <blade@debian.org>  Wed, 14 Sep 2005 00:14:34 +0200
+
+cloop (2.02.1+eb.2) unstable; urgency=low
+
+  * Added EXTRA_CFLAGS to work around a weird FTBFS with kernel-headers-2.6.*
+    packages, still looks like a bug _there_
+
+ -- Eduard Bloch <blade@debian.org>  Thu, 08 Sep 2005 19:47:51 +0200
+
+cloop (2.02.1+eb.1) experimental; urgency=low
+
+  * rewrote advfs (multithreaded, network client/server feature and better
+    memory/storage strategies), see header of advfs.cc for details
+  * made the package native until the sync with KK (or maybe longer)
+  * integrated advancecomp-1.14, separated the advfs add-on from the main
+    package and stored it as a patch
+  * dropped the advfs symlink, creating one was Debian specific and bad idea
+    anyways. It is installed as create_compressed_fs as usual now.
+  * removed cruft (.postinst file that has been overwritten anyways)
+
+ -- Eduard Bloch <blade@debian.org>  Fri, 02 Sep 2005 21:40:36 +0200
+
+cloop (2.02.1-1) unstable; urgency=low
+
+  * New upstream release
+    + sync with Knoppix version, version string relabeled as usual
+  * rewrote the Makefile making use of kernel 2.6 build system, created
+    proper install rules (I should have done this already for #288941). The
+    strange problem with /usr/src/linux on kernel 2.4 should also go away
+    (closes: #322360)
+  * old versions of cloop module source removed (discontinued, they are not
+    compatible with kernel 2.6 anyways). Get the packages from Stable if you
+    need to read really old KNOPPIX images. (closes: #259699)
+  * changelog cleanup, replaced Klaus' invalid local mail addresses
+  * control file generations cleanup, dropped the old junk in favor of
+    module-assistant's methods
+  * updated and simplified (m-a) README.Debian instructions
+  * using bzip2 for the source tarball
+  * fixed the templates file installation in the modules packages
+  * added Vietnamese translation by Clytie Siddall (closes: #313361)
+  * added pt_BT translation by Rodrigo Tadeu Claro and Andre Luis Lopes
+    (closes: #303675)
+  * removed an "a" forgotten in plural form (closes: #313360), thanks Clytie
+  * advfs patch to use a temporary file rather than memory by Sebastian
+    Schmidt (closes: #297453)
+
+ -- Eduard Bloch <blade@debian.org>  Fri, 19 Aug 2005 22:57:46 +0200
+
+cloop (2.01.5-4) unstable; urgency=low
+
+  * patch to fix Large File support in directly specified cloop volumes and
+    cleanup device configuration on errors (closes: #298111)
+
+ -- Eduard Bloch <blade@debian.org>  Sun, 06 Mar 2005 11:33:36 +0100
+
+cloop (2.01.5-3) unstable; urgency=medium
+
+  * made regular expression in Makefile more strict (no more false kernel-2.6
+    detection, closes: #290957)
+  * patch for amd64 from Andreas Jochens <aj@andaco.de> (closes: #288941)
+
+ -- Eduard Bloch <blade@debian.org>  Sun, 06 Feb 2005 11:06:10 +0100
+
+cloop (2.01.5-2) unstable; urgency=high
+
+  * added -O2 option to solve symbole resolution problems (closes: #278207)
+  * added patch from Andreas Jochens for gcc-3.4 compliancy (closes: #258579)
+  * added Czesh translation (closes: #259179)
+
+ -- Eduard Bloch <blade@debian.org>  Wed, 29 Dec 2004 21:52:21 +0100
+
+cloop (2.01.5-1) unstable; urgency=low
+
+  * New upstream release
+    + devfs_unregister patch from Bernhard M. Wiedemann <bernhard@lsmod.de>
+  * changed the manpage license from GFDL to GPL
+
+ -- Eduard Bloch <blade@debian.org>  Tue, 12 Oct 2004 10:04:13 +0200
+
+cloop (2.01.4-3) unstable; urgency=medium
+
+  * Applied kernel 2.6.8 related patch from Thomas Jahns (closes: #271083)
+  * Also added his patch for older cloop versions to build with zlib_inflate
+    _modules_ - though it will still break with older kernels that did not
+    export the uncompress symbol, see README.Debian and
+    http://bugs.debian.org/cgi-bin/184246 for details
+  * adapted the rules file to use common-rules.mk from module-assistant,
+    including usage of the ROOT_CMD command (closes: #232974). For other
+    myths about root_cmd in make-kpkg's config, read bugs.debian.org/242974
+
+ -- Eduard Bloch <blade@debian.org>  Sat, 11 Sep 2004 08:39:32 +0200
+
+cloop (2.01.4-2) unstable; urgency=low
+
+  * depending on a newer gcc version since 2.95 does not compile advfs. Woody
+    users can ignore it and set CC=gcc-3.0 to use gcc-3.0
+  * explicitely ignoring the knoppix flag file (closes: #252409)
+
+ -- Eduard Bloch <blade@debian.org>  Mon, 31 May 2004 11:11:35 +0200
+
+cloop (2.01.4-1) unstable; urgency=low
+
+  * New upstream "release", based on Klaus' 2.01-4 package
+  * Makefiles and build rules fixes to work on recent kernel 2.6 versions
+  * new Dutch debconf translation (closes: #241426)
+
+ -- Eduard Bloch <blade@debian.org>  Mon, 31 May 2004 09:25:23 +0200
+
+cloop (2.01-1) unstable; urgency=low
+
+  * New upstream release
+    + Kernel 2.6 port (version 2.0x only)
+  * MODVERSIONS include disabled if modversions.h is not existent
+
+ -- Eduard Bloch <blade@debian.org>  Fri,  5 Mar 2004 23:04:19 +0100
+
+cloop (2.00-3) unstable; urgency=low
+
+  * Made CONFIG_ZLIB_INFLATE=y to requriement again and removed that crappy
+    inflate.c inclusion completely from 1.02 source. If you wish to
+    modularize it, send patches (closes: #230091)
+
+ -- Eduard Bloch <blade@debian.org>  Mon, 26 Jan 2004 00:35:15 +0100
+
+cloop (2.00-2) unstable; urgency=low
+
+  * Removing "knoppix" keyfile until it is clear how to proceed with
+    Knoppix/Debian integration; fixes build failure on normal Debian 
+    systems (closes: #229310)
+
+ -- Eduard Bloch <blade@debian.org>  Mon, 19 Jan 2004 14:39:00 +0100
+
+cloop (2.00-1) unstable; urgency=low
+
+  * New upstream release (closes: #222564)
+  * Kicked INFLATE_C workaround, apparently fixed by upstream
+  * Added Japanese templates translation, thanks to Hideki Yamane 
+    (Closes: #227544)
+  * Imported old cloop versions. The most recent module is called cloop.o, the
+    others are cloop-0.68.o and cloop-1.02.o (closes: #208686)
+
+ -- Eduard Bloch <blade@debian.org>  Mon, 19 Jan 2004 13:34:56 +0100
+
+cloop (1.02-5) unstable; urgency=low
+
+  * Russian po file translation (Closes: #214332)
+  * Changed the translators name in fr.po (Closes: #206824)
+  * Don't run depmod from postrm (Closes: #214439)
+
+ -- Eduard Bloch <blade@debian.org>  Sun, 28 Sep 2003 17:27:27 +0200
+
+cloop (1.02-4) unstable; urgency=low
+
+  * Load inflate.c from customized location for people that don't want to
+    follow README.Debian. Closes: #213001
+
+ -- Eduard Bloch <blade@debian.org>  Sat, 20 Sep 2003 14:05:00 +0200
+
+cloop (1.02-3) unstable; urgency=low
+
+  * Modifications to build cleanly for KNOPPIX
+
+ -- Eduard Bloch <blade@debian.org>  Sat, 20 Sep 2003 13:41:30 +0200
+
+cloop (1.02-2) unstable; urgency=low
+
+  * New upstream release (merged with Klaus' source), closes: #210773
+  * adapted to work with module-assistant
+  * renamed modules package to cloop-module-KVERS
+  * creating more device file in postinst, cloop supports multiple devices
+  * changed to po-debconf method (closes: #205809) and added French
+    translation (closes: #206824), thanks to Christian Perrier, and thanks to
+    Sam Hocevar for help on updating them
+  * Added German translation too
+
+ -- Eduard Bloch <blade@debian.org>  Wed, 17 Sep 2003 18:00:20 +0200
+
+cloop (1.02-1) unstable; urgency=low
+
+  * Removed exceed get_file()
+  * Changed spinlocking code
+
+ -- Klaus Knopper <cloop@knopper.net>  Wed, 27 Aug 2003 13:51:45 +0200
+
+cloop (1.0-7) unstable; urgency=low
+
+  * Experimental, for m-a 
+
+ -- Eduard Bloch <blade@debian.org>  Thu,  4 Sep 2003 15:58:14 +0200
+
+cloop (1.0-6) unstable; urgency=low
+
+  * Build against the Sid version of libc6, thanks to David B. Harris for
+    reminding me
+
+ -- Eduard Bloch <blade@debian.org>  Thu,  7 Aug 2003 00:12:58 +0200
+
+cloop (1.0-5) unstable; urgency=low
+
+  * Now really fix the clean call, closes: #203990
+
+ -- Eduard Bloch <blade@debian.org>  Sun,  3 Aug 2003 21:50:27 +0200
+
+cloop (1.0-4) unstable; urgency=low
+
+  * Fixed the clean rule call, closes: #203990
+
+ -- Eduard Bloch <blade@debian.org>  Sun,  3 Aug 2003 16:29:29 +0200
+
+cloop (1.0-3) unstable; urgency=low
+
+  * Resync with the new upstream version
+    + Changes summary: 
+      - kernel 2.2 support is gone (and removed zlib source copy from the
+        modules source package)
+      - multiple device support via the losetup interface
+    + Also removed zlib three from the package, kernel 2.2 support is gone
+  * moved the postrm to module package only, depmod return value ignored,
+    closes: #203948
+
+ -- Eduard Bloch <blade@debian.org>  Sun,  3 Aug 2003 08:01:08 +0200
+
+cloop (1.0-2) unstable; urgency=low
+
+  * Removed compressloop until a newer version with 64bit pointers is
+    available from the author.
+
+ -- root <cloop@knopper.net>  Thu, 24 Jul 2003 01:45:16 +0200
+
+cloop (1.0-1) unstable; urgency=low
+
+  * Added multiple cloop device (losetup) support (default 8)
+  * Removed Kernel 2.2 support
+  * switched to 64bit offsets in cloop file (no backwards compatibility)
+  * file=/path/to/file parameter is now optional
+
+ -- Klaus Knopper <cloop@knopper.net>  Sun, 13 Jul 2003 01:29:26 +0200
+
+cloop (0.68-5) unstable; urgency=low
+
+  * changed int to u_int32_t for offset
+
+ -- root <cloop@knopper.net>  Wed, 25 Jun 2003 06:16:12 +0200
+
+cloop (0.68-4) unstable; urgency=low
+
+  * Eduard Bloch:
+    - generating control from control.head.{knopper,debian} to appease Klaus.
+      Consequence for Debian uploads: "new" maintainer ;)
+    - fixing the incorrectly detected gcc- string, closes: #189998
+    - documented the requirement of CONFIG_ZLIB_INFLATE, closes: #184246
+    - double-checked that create_compressed_fs.1 is installed, closes: #164014
+    - *sigh* changed a copy&paste error in README.Debian, closes: #185999
+    - something is still wrong with the genchanges.sh crap, no time to fix
+
+ -- Eduard Bloch <blade@debian.org>  Sun, 11 May 2003 12:26:16 +0200
+
+cloop (0.68-3) unstable; urgency=low
+
+  * resynced the source with Klaus' tree and prepared for alioth
+  * Changes summary, Eduard Bloch:
+    - Use dynamic libz for utils (closes: #176002)
+    - Minimalistic devfs support
+    - added dynamic compiler detection and KPKG_DEST_DIR, borrowed from ALSA
+    Klaus Knopper:
+    - Added modprobe dependency on bsdcomp 
+    - Updated compressloop
+
+ -- Eduard Bloch <blade@debian.org>  Mon, 31 Mar 2003 12:52:37 +0200
+
+cloop (0.67-3) unstable; urgency=low
+
+  * New upstream release, merged changes from Klaus Knopper and others,
+    rev. 0.66-2..0.67-2:
+    - Added compressloop by Valentijn Sessink <valentyn+knoppix@openoffice.nl>
+    - Use builtin zlib_inflate of Kernel 2.4.x, if available
+    - Added more gcc options to Makefile
+
+ -- Eduard Bloch <blade@debian.org>  Mon,  6 Jan 2003 17:45:48 +0100
+
+cloop (0.66-1) unstable; urgency=low
+
+  * Cleaned the zlib source
+
+ -- Eduard Bloch <blade@debian.org>  Tue, 20 Aug 2002 09:41:59 +0200
+
+cloop (0.66-0.1) unstable; urgency=low
+
+  * Replaced ll_rw_blk in Kernel 2.4 version to enable looping over NFS
+  * Cleaned up kernel messages
+  * failed r/w mount now returns EROFS instead of EPERM.
+
+ -- root <cloop@knopper.net>  Sat, 17 Aug 2002 14:02:05 +0200
+
+cloop (0.65-1) unstable; urgency=low
+
+  * Handle blockdevices as cloop input files.
+
+ -- root <cloop@knopper.net>  Wed, 24 Apr 2002 16:09:07 +0200
+
+cloop (0.64-1) unstable; urgency=low
+
+  * zlib 1.1.4
+
+ -- Klaus Knopper <cloop@knopper.net>  Wed, 20 Mar 2002 23:18:34 +0100
+
+cloop (0.63.1-4) unstable; urgency=low
+
+  * Adopted version numbering and changes-generator from lm-sensors/pcmcia-cs,
+    now ready to build official modules packages
+  * Changed all Maintainer entries to my person
+
+ -- Eduard Bloch <blade@debian.org>  Wed, 13 Mar 2002 11:25:16 +0100
+
+cloop (0.63.1-3) unstable; urgency=high
+
+  * patched the embedded zlib source with 010_doublefree_crash from zlib source
+
+ -- Eduard Bloch <blade@debian.org>  Tue, 12 Mar 2002 16:56:21 +0100
+
+cloop (0.63-2) unstable; urgency=low
+
+  * "new" maintainer (adopted the package completely)
+  * Added a kdist rule, needed by make-kpkg in some cases. Closes: #130320
+  * A small hack to modify the version info with the target kernel
+
+ -- Eduard Bloch <blade@debian.org>  Tue, 22 Jan 2002 19:52:34 +0100
+
+cloop (0.63-1.1) unstable; urgency=low
+
+  * merged with the debconf dialog changes
+  * make a check for existance of /dev/cloop in postinst
+
+ -- Eduard Bloch <blade@debian.org>  Wed, 26 Dec 2001 17:48:05 +0100
+
+cloop (0.63-1) unstable; urgency=low
+
+  * Bugfix release, fixed request_queue mess.
+
+ -- Klaus Knopper <cloop@knopper.net>  Mon, 25 Dec 2001 04:08:58 +0200
+
+cloop (0.62-2) unstable; urgency=low
+
+  * Rewrite of the build system, reused for modules source package.
+  * Dropped unused source parts from the zlib source.
+  * copyright file: added reference to the GPL file, comment about usage
+    of zlib stuff and its copyright notice
+  * wrote manpage
+  * moved executables to /usr/bin, not administrative/system programs
+
+ -- Eduard Bloch <blade@debian.org>  Fri, 30 Nov 2001 14:24:29 +0100
+
+cloop (0.62-1) unstable; urgency=low
+
+  * Added GPL License code for Kernel 2.4.9 and up
+
+ -- Klaus Knopper <cloop@knopper.net>  Thu, 15 Nov 2001 04:08:58 +0200
+
+cloop (0.61-1) unstable; urgency=low
+
+  * Checking filp_open() for IS_ERR() to prevent oopses for nonexistent files
+  * Cleanup of create_compressed_fs.c for newer version of gcc
+
+ -- Klaus Knopper <cloop@knopper.net>  Tue, 31 Jul 2001 04:08:58 +0200
+
+cloop (0.60-1) unstable; urgency=low
+
+  * improved 2.4.x read handling vir do_generic_file_read()
+
+ -- Klaus Knopper <cloop@knopper.net>  Fri,  8 Jun 2001 04:08:58 +0200
+
+cloop (0.51-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Klaus Knopper <cloop@knopper.net>  Thu,  7 Jun 2001 04:08:58 +0200
+
+Local variables:
+mode: debian-changelog
+End:
